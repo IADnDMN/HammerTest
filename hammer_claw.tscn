@@ -10,6 +10,7 @@ bounce = 0.2
 radius = 20.0
 
 [node name="hammer_claw" type="RigidBody2D"]
+mass = 0.5
 physics_material_override = SubResource("PhysicsMaterial_r0tnp")
 script = ExtResource("1_u30s5")
 

@@ -13,6 +13,7 @@ var playerSprintMult = 1.5
 var playerCanAttack = true
 var playerAttackCooldown = 0.0
 var playerAttackCooldownMax = 0.5
+var playerThrowForce = 1000.0
 
 enum HAMMER_TYPE { HAMMER, CLAW, MALLET, SLEDGE, JACKHAMMER, EMPTY }
 
@@ -63,6 +64,9 @@ func _swapItemRight():
 		activeItemIndex = 0
 	inventory_changed.emit()
 
+func _attackWithHammer(attack_dir):
+	pass #TODO: implement normal attack
+
 func _throwHammer(throw_dir):
 	playerAttackCooldown = playerAttackCooldownMax
 	var throw
@@ -75,24 +79,10 @@ func _throwHammer(throw_dir):
 			throw = hammerMallet.instantiate()
 	theWorld.add_child(throw)
 	
-	var clearance = 100.0
-	match throw_dir:
-		"throw_left":
-			throw.position = (Vector2(self.position.x - clearance, self.position.y))
-			throw.apply_central_impulse(Vector2(-1000.0, 0.0))
-			throw.apply_torque_impulse(-1000.0)
-		"throw_up":
-			throw.position = (Vector2(self.position.x, self.position.y - clearance))
-			throw.apply_central_impulse(Vector2(0.0, -1000.0))
-			throw.apply_torque_impulse(-1000.0)
-		"throw_right":
-			throw.position = (Vector2(self.position.x + clearance, self.position.y))
-			throw.apply_central_impulse(Vector2(1000.0, 0.0))
-			throw.apply_torque_impulse(1000.0)
-		"throw_down":
-			throw.position = (Vector2(self.position.x, self.position.y + clearance))
-			throw.apply_central_impulse(Vector2(0.0, 1000.0))
-			throw.apply_torque_impulse(1000.0)
+	var clearance = 50.0
+	throw.position = (self.position + throw_dir * clearance)
+	throw.apply_central_impulse((throw.position - self.position).normalized() * playerThrowForce)
+	throw.apply_torque_impulse(1000.0)
 	
 	inventory.remove_at(activeItemIndex)
 	if activeItemIndex >= inventory.size():
@@ -117,14 +107,47 @@ func _physics_process(delta):
 		_swapItemLeft()
 	if Input.is_action_just_pressed("swap_right") and playerCanAttack and inventory.size() > 1:
 		_swapItemRight()
-	if Input.is_action_just_released("throw_right") and playerCanAttack and inventory.size() > 0:
-		_throwHammer("throw_right")
-	if Input.is_action_just_released("throw_up") and playerCanAttack and inventory.size() > 0:
-		_throwHammer("throw_up")
-	if Input.is_action_just_released("throw_left") and playerCanAttack and inventory.size() > 0:
-		_throwHammer("throw_left")
-	if Input.is_action_just_released("throw_down") and playerCanAttack and inventory.size() > 0:
-		_throwHammer("throw_down")
+	if Input.is_action_just_released("attack_down") and playerCanAttack and inventory.size() > 0:
+		var attackDir = Vector2(0.0, 1.0)
+		if Input.is_action_pressed("attack_left"):
+			attackDir = Vector2(-1.0, 1.0).normalized()
+		elif Input.is_action_pressed("attack_right"):
+			attackDir = Vector2(1.0, 1.0).normalized()
+		if Input.is_action_pressed("throw"):
+			_throwHammer(attackDir)
+		else:
+			_attackWithHammer(attackDir)
+	if Input.is_action_just_released("attack_left") and playerCanAttack and inventory.size() > 0:
+		var attackDir = Vector2(-1.0, 0.0)
+		if Input.is_action_pressed("attack_up"):
+			attackDir = Vector2(-1.0, -1.0).normalized()
+		elif Input.is_action_pressed("attack_down"):
+			attackDir = Vector2(-1.0, 1.0).normalized()
+		if Input.is_action_pressed("throw"):
+			_throwHammer(attackDir)
+		else:
+			_attackWithHammer(attackDir)
+	if Input.is_action_just_released("attack_right") and playerCanAttack and inventory.size() > 0:
+		var attackDir = Vector2(1.0, 0.0)
+		if Input.is_action_pressed("attack_up"):
+			attackDir = Vector2(1.0, -1.0).normalized()
+		elif Input.is_action_pressed("attack_down"):
+			attackDir = Vector2(1.0, 1.0).normalized()
+		if Input.is_action_pressed("throw"):
+			_throwHammer(attackDir)
+		else:
+			_attackWithHammer(attackDir)
+	if Input.is_action_just_released("attack_up") and playerCanAttack and inventory.size() > 0:
+		var attackDir = Vector2(0.0, -1.0)
+		if Input.is_action_pressed("attack_left"):
+			attackDir = Vector2(-1.0, -1.0).normalized()
+		elif Input.is_action_pressed("attack_right"):
+			attackDir = Vector2(1.0, -1.0).normalized()
+		if Input.is_action_pressed("throw"):
+			_throwHammer(attackDir)
+		else:
+			_attackWithHammer(attackDir)
+			
 	if Input.is_action_pressed("move_up"):
 		moveDir.y = -1.0
 	if Input.is_action_pressed("move_down"):

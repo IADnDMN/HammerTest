@@ -7,10 +7,10 @@
 script = ExtResource("1_wgipc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
-scale = Vector2(0.5, 0.5)
+scale = Vector2(0.33, 0.33)
 texture = ExtResource("2_ye17w")
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
-polygon = PackedVector2Array(32, 28, 28, 32, -28, 32, -32, 28, -32, -28, -28, -32, 28, -32, 32, -28)
+polygon = PackedVector2Array(21, 18, 18, 21, -18, 21, -21, 18, -21, -18, -18, -21, 18, -21, 21, -18)
 
 [node name="Camera2D" type="Camera2D" parent="."]
