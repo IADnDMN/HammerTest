@@ -1,0 +1,29 @@
+[gd_scene load_steps=5 format=3 uid="uid://biw1c4703eeef"]
+
+[ext_resource type="Texture2D" uid="uid://dv0ri6kntdcch" path="res://sprites/hammer01.png" id="1_1875n"]
+[ext_resource type="Script" path="res://hammer01.gd" id="1_tpppj"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_27ptg"]
+bounce = 0.1
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_bu402"]
+radius = 33.0
+
+[node name="hammer01" type="RigidBody2D"]
+mass = 2.0
+physics_material_override = SubResource("PhysicsMaterial_27ptg")
+script = ExtResource("1_tpppj")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_1875n")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(10, -4, 2, -4, 2, 16, -2, 16, -2, -4, -10, -4, -10, -14, -2, -16, 2, -16, 10, -14)
+
+[node name="pickup" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pickup"]
+shape = SubResource("CircleShape2D_bu402")
+
+[connection signal="body_entered" from="pickup" to="." method="_on_pickup_body_entered"]

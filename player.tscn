@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://cub1851rjrksi"]
+
+[ext_resource type="Script" path="res://player.gd" id="1_wgipc"]
+[ext_resource type="Texture2D" uid="uid://3sip0ajql2h2" path="res://icon.svg" id="2_ye17w"]
+
+[node name="player" type="CharacterBody2D"]
+script = ExtResource("1_wgipc")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 0.5)
+texture = ExtResource("2_ye17w")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(32, 28, 28, 32, -28, 32, -32, 28, -32, -28, -28, -32, 28, -32, 32, -28)
+
+[node name="Camera2D" type="Camera2D" parent="."]

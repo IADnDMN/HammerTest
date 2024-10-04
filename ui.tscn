@@ -1,0 +1,18 @@
+[gd_scene load_steps=2 format=3 uid="uid://cms1wduh0bqot"]
+
+[ext_resource type="Script" path="res://ui.gd" id="1_1pdyg"]
+
+[node name="CanvasLayer" type="CanvasLayer"]
+script = ExtResource("1_1pdyg")
+
+[node name="item_active" type="Sprite2D" parent="."]
+position = Vector2(950, 64)
+scale = Vector2(4, 4)
+
+[node name="item_left" type="Sprite2D" parent="."]
+position = Vector2(850, 32)
+scale = Vector2(2, 2)
+
+[node name="item_right" type="Sprite2D" parent="."]
+position = Vector2(1050, 32)
+scale = Vector2(2, 2)

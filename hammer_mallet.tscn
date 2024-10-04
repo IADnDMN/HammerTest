@@ -1,0 +1,30 @@
+[gd_scene load_steps=5 format=3 uid="uid://1voo2nokm5ia"]
+
+[ext_resource type="Texture2D" uid="uid://dupidbnwiv4xc" path="res://sprites/hammer_mallet.png" id="1_luxfo"]
+[ext_resource type="Script" path="res://hammer_mallet.gd" id="1_wfal5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_ndse0"]
+bounce = 10.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_wwnmo"]
+radius = 33.0
+
+[node name="hammer_mallet" type="RigidBody2D"]
+mass = 1.25
+physics_material_override = SubResource("PhysicsMaterial_ndse0")
+script = ExtResource("1_wfal5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_luxfo")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(10, -10, 10, -2, 8, 0, 2, 0, 2, 14, -2, 14, -2, 0, -8, 0, -10, -2, -10, -10, -8, -12, -2, -12, -2, -14, 2, -14, 2, -12, 8, -12)
+
+[node name="pickup" type="Area2D" parent="."]
+linear_damp = 1.0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pickup"]
+shape = SubResource("CircleShape2D_wwnmo")
+
+[connection signal="body_entered" from="pickup" to="." method="_on_pickup_body_entered"]

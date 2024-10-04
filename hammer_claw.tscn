@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=3 uid="uid://6ku4x5gdfmql"]
+
+[ext_resource type="Texture2D" uid="uid://bgcgouojfr75g" path="res://sprites/hammer_claw.png" id="1_alvyo"]
+[ext_resource type="Script" path="res://hammer_claw.gd" id="1_u30s5"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_r0tnp"]
+bounce = 0.2
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_ic5vl"]
+radius = 20.0
+
+[node name="hammer_claw" type="RigidBody2D"]
+physics_material_override = SubResource("PhysicsMaterial_r0tnp")
+script = ExtResource("1_u30s5")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(2, 2)
+texture = ExtResource("1_alvyo")
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(8, -12, 10, -10, 10, -8, 2, -8, 4, 8, 4, 12, -2, 12, -2, -6, -8, -6, -8, -14, 2, -14)
+
+[node name="pickup" type="Area2D" parent="."]
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="pickup"]
+shape = SubResource("CircleShape2D_ic5vl")
+
+[connection signal="body_entered" from="pickup" to="." method="_on_pickup_body_entered"]
